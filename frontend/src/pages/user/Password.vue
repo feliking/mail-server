@@ -1,7 +1,7 @@
 <template>
   <q-page padding class="flex flex-center">
     <q-form @submit="updatePassword()">
-      <div class="row q-gutter-lg">
+      <div class="row q-gutter-lg" style="width: 400px">
         <div class="col-12 col-md-auto">
           <q-input
             type="password"
@@ -69,6 +69,10 @@ export default {
           message: res.data.message,
           color: 'positive'
         })
+        this.form.old_password = ''
+        this.form.new_password = ''
+        this.form.repeat_new_password = ''
+        this.$router.push({ name: 'index' })
         this.loading = false
       } catch (error) {
         console.log(error)

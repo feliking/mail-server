@@ -1,5 +1,6 @@
 <template>
-  <q-page padding class="flex flex-center">
+  <q-page padding class="flex flex-center bg-grey-3">
+    <Register />
     <div class="row">
       <div class="col-xs-12 text-center">
       </div>
@@ -43,37 +44,79 @@
               </q-input>
             </q-card-section>
             <q-card-actions>
-              <q-btn
-                color="primary"
-                class="full-width"
-                type="submit"
-                :loading="loading">
-                Ingresar
-              </q-btn>
+              <div class="row full-width">
+                <div class="col-12">
+                  <div>
+                    <q-btn
+                      color="primary"
+                      type="submit"
+                      :loading="loading"
+                      no-caps
+                      class="full-width">
+                      <strong>
+                        Iniciar sesión
+                      </strong>
+                    </q-btn>
+                  </div>
+                </div>
+                <div class="col-12 q-py-sm">
+                  ¿Olvidaste tu contraseña?
+                </div>
+                <div class="col-12">
+                  <q-btn
+                    color="positive"
+                    no-caps
+                    @click="register()">
+                    <strong>Crear nueva cuenta</strong>
+                  </q-btn>
+                </div>
+              </div>
             </q-card-actions>
           </q-form>
         </q-card>
       </div>
     </div>
+
+    <q-dialog
+      v-model="dialog">
+      <q-card>
+        <q-card-section>
+          <span>
+            Gracias por registrarte, enviamos un mensaje de confimación a su correo electrónico
+          </span>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import Form from '../../mixins/form'
+import Register from './Register'
+
 export default {
   name: 'Index',
   mixins: [Form],
+  components: {
+    Register
+  },
   data () {
     return {
       form: {
         email: null,
         password: null
       },
-      isPwd: true
+      isPwd: true,
+      dialog: false
     }
   },
   created () {
     this.form.email = this.$route.query.email || null
+  },
+  mounted () {
+    this.$root.$on('closeDialogRegister', () => {
+      this.dialog = true
+    })
   },
   methods: {
     submit () {
@@ -96,6 +139,9 @@ export default {
         .then(() => {
           this.loading = false
         })
+    },
+    register () {
+      this.$root.$emit('openDialogRegister')
     }
   }
 }

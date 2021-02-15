@@ -15,7 +15,7 @@
             label="Correo electrónico"
             :rules="[v => !!v || 'Campo requerido']"
             hint="Obligatorio*"
-            :disable="edit"
+            disable
           />
           <q-btn
             class="full-width glossy q-my-sm"

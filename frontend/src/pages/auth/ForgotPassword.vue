@@ -3,37 +3,22 @@
     v-model="dialog"
     persistent
     @hide="close()">
-    <q-card style="min-width: 350px">
+    <q-card style="width: 350px">
       <q-card-section class="row items-center q-pb-none">
-        <div class="text-h5">Registrate <br><span class="text-subtitle2 text-grey">Es rápido y fácil</span></div>
+        <div class="text-h5">{{ send ? 'Mensaje enviado' : 'Buscar cuenta' }} <br><span class="text-subtitle2 text-grey" v-if="send == false">Introduce tu correo</span></div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
       <q-separator />
 
-      <q-card-section class="q-px-md">
-        <q-form @submit="registerUser()">
-          <q-input
-            label="Nombre"
-            v-model="user.name"
-            :rules="[v => !!v || 'Campo obligatorio']"
-          />
+      <q-card-section
+        class="q-px-md"
+        v-if="send == false">
+        <q-form @submit="verifyEmail()">
           <q-input
             label="Correo Electrónico"
             v-model="user.email"
-            :rules="[v => !!v || 'Campo obligatorio']"
-          />
-          <q-input
-            type="password"
-            label="Contraseña"
-            v-model="user.password"
-            :rules="[v => !!v || 'Campo obligatorio']"
-          />
-          <q-input
-            type="password"
-            label="Repita la Contraseña"
-            v-model="repeat_password"
             :rules="[v => !!v || 'Campo obligatorio']"
           />
           <br>
@@ -44,10 +29,56 @@
             no-caps
             :loading="loading">
             <strong>
-              Registrar
+              Buscar
             </strong>
           </q-btn>
         </q-form>
+      </q-card-section>
+      <q-card-section>
+        <div
+          class="row q-py-sm"
+          transition-show="flip-down"
+          transition-hide="flip-up"
+          v-if="find"
+          >
+          <div class="col-2 text-negative text-center">
+            <q-btn
+              icon="clear"
+              round
+              color="negative"
+              size="sm"
+              glossy
+            />
+          </div>
+          <div class="col-10">
+            <span class="text-negative text-subtitle1">
+              No se encontró la cuenta
+            </span>
+          </div>
+        </div>
+        <div
+          class="row q-py-sm"
+          transition-show="flip-down"
+          transition-hide="flip-up"
+          v-if="send">
+          <div class="col-2 text-positive text-center">
+            <q-btn
+              icon="check"
+              round
+              color="positive"
+              size="xs"
+              glossy
+            />
+          </div>
+          <div class="col-10">
+            <span class="text-positive text-subtitle2">
+              Mensaje de recuperación envíado
+            </span>
+            <span>
+              Revisa tu correo electrónico, si no aparece en la bandeja principal, revisa el Spam
+            </span>
+          </div>
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -59,16 +90,15 @@ export default {
     return {
       dialog: false,
       user: {
-        name: '',
-        email: '',
-        password: ''
+        email: ''
       },
-      repeat_password: '',
-      loading: false
+      loading: false,
+      find: false,
+      send: false
     }
   },
   mounted () {
-    this.$root.$on('openDialogRegister', () => {
+    this.$root.$on('openDialogForgotPassword', () => {
       this.dialog = true
     })
   },
@@ -102,25 +132,27 @@ export default {
       this.loading = false
     },
     async verifyEmail () {
+      this.loading = true
       try {
         const res = await this.$axios.post('user/find', this.user)
         if (res.data) {
-          return false
+          this.send = true
+          this.find = false
         } else {
-          return true
+          this.send = false
+          this.find = true
         }
       } catch (error) {
         console.log(error)
       }
+      this.loading = false
     },
     close () {
       this.user = {
-        name: '',
-        email: '',
-        password: ''
+        email: ''
       }
-      this.repeat_password = ''
-      this.loading = false
+      this.find = false
+      this.send = false
       this.dialog = false
     }
   }

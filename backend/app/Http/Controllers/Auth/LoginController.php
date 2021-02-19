@@ -42,7 +42,7 @@ class LoginController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Cuenta inexistente'], 401);
+            return response()->json(['message' => 'Usuario o contraseña incorrecto'], 401);
         }
 
         $user = $request->user();

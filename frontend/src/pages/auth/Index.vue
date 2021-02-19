@@ -1,6 +1,7 @@
 <template>
   <q-page padding class="flex flex-center bg-grey-3">
     <Register />
+    <ForgotPassword />
     <div class="row">
       <div class="col-xs-12 text-center">
       </div>
@@ -60,7 +61,11 @@
                   </div>
                 </div>
                 <div class="col-12 q-py-sm">
-                  ¿Olvidaste tu contraseña?
+                  <span
+                    class="forgotPassword"
+                    @click="forgotPassword()">
+                    ¿Olvidaste tu contraseña?
+                  </span>
                 </div>
                 <div class="col-12">
                   <q-btn
@@ -93,12 +98,14 @@
 <script>
 import Form from '../../mixins/form'
 import Register from './Register'
+import ForgotPassword from './ForgotPassword'
 
 export default {
   name: 'Index',
   mixins: [Form],
   components: {
-    Register
+    Register,
+    ForgotPassword
   },
   data () {
     return {
@@ -142,7 +149,20 @@ export default {
     },
     register () {
       this.$root.$emit('openDialogRegister')
+    },
+    forgotPassword () {
+      this.$root.$emit('openDialogForgotPassword')
     }
   }
 }
 </script>
+
+<style>
+.forgotPassword {
+  color: #4388F5;
+}
+.forgotPassword:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+</style>

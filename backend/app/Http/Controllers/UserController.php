@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -25,7 +26,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::create($request->all());
+        $request['password'] = bcrypt($request['password']);
+        $user = User::create($request->all());
+        return $user->email;
     }
 
     /**
@@ -79,6 +82,15 @@ class UserController extends Controller
             ]);
         } else {
             abort(500, 'Contraseña incorrecta');
+        }
+    }
+
+    public function find_email (Request $request) {
+        $user = User::where('email', $request['email'])->first();
+        if ($user) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

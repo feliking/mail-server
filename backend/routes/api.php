@@ -27,11 +27,14 @@ Route::group(['middleware' => ['guest:api']], function() {
     Route::post('password/reset', '\App\Http\Controllers\Auth\ResetPasswordController@reset');
 
     Route::post('register', '\App\Http\Controllers\Auth\RegisterController@register');
+    
+    Route::post('user', '\App\Http\Controllers\UserController@store');
+    Route::post('user/find', '\App\Http\Controllers\UserController@find_email');
 });
 
 Route::group(['middleware' => ['jwt']], function() {
     Route::post('logout', '\App\Http\Controllers\Auth\LoginController@logout');
     Route::get('me', '\App\Http\Controllers\Auth\LoginController@me');
-    Route::apiResource('user', UserController::class);
+    Route::apiResource('user', UserController::class)->except(['store']);
     Route::post('change_password', '\App\Http\Controllers\UserController@change_password');
 });

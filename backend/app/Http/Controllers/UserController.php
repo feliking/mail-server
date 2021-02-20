@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RecoveryPassword;
 
 class UserController extends Controller
 {
@@ -27,6 +29,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request['password'] = bcrypt($request['password']);
+        $request['recovery_password'] = uniqid();
         $user = User::create($request->all());
         return $user->email;
     }
@@ -92,5 +95,24 @@ class UserController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function recovery_password (Request $request) {
+        $user = User::where('email', $request['email'])->first();
+        Mail::to($user->email)->send(new RecoveryPassword($user));
+        return $user->email;
+    }
+
+    public function verify_code (Request $request) {
+        return User::where('recovery_password', $request['code'])->get();
+    }
+
+    public function reset_password (Request $request) {
+        $user = User::findOrFail($request['id']);
+        $request['password'] = bcrypt($request['password']);
+        $request['recovery_password'] = uniqid();
+        $user->fill($request->all());
+        $user->save();
+        return $user->email;
     }
 }

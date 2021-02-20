@@ -8,6 +8,11 @@ export default [
           path: '',
           name: 'login',
           component: () => import('pages/auth/Index.vue')
+        },
+        {
+          path: '/recovery_password/:code',
+          name: 'recovery_password',
+          component: () => import('pages/auth/RecoveryPassword.vue')
         }
       ]
     }

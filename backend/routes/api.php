@@ -23,13 +23,16 @@ Route::group(['middleware' => ['guest:api']], function() {
     Route::post('login', '\App\Http\Controllers\Auth\LoginController@login');
     Route::post('login/refresh', '\App\Http\Controllers\Auth\LoginController@refresh');
 
-    Route::post('password/email', '\App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail');
-    Route::post('password/reset', '\App\Http\Controllers\Auth\ResetPasswordController@reset');
+    // Route::post('password/email', '\App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail');
+    // Route::post('password/reset', '\App\Http\Controllers\Auth\ResetPasswordController@reset');
 
-    Route::post('register', '\App\Http\Controllers\Auth\RegisterController@register');
+    // Route::post('register', '\App\Http\Controllers\Auth\RegisterController@register');
     
     Route::post('user', '\App\Http\Controllers\UserController@store');
     Route::post('user/find', '\App\Http\Controllers\UserController@find_email');
+    Route::post('user/recovery_password', '\App\Http\Controllers\UserController@recovery_password');
+    Route::post('user/verify_code', '\App\Http\Controllers\UserController@verify_code');
+    Route::post('user/reset_password', '\App\Http\Controllers\UserController@reset_password');
 });
 
 Route::group(['middleware' => ['jwt']], function() {

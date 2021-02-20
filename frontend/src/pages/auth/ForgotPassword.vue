@@ -136,6 +136,7 @@ export default {
       try {
         const res = await this.$axios.post('user/find', this.user)
         if (res.data) {
+          await this.$axios.post('user/recovery_password', this.user)
           this.send = true
           this.find = false
         } else {

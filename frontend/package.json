@@ -1,13 +1,14 @@
 {
   "name": "frontend",
   "version": "0.0.1",
-  "description": "Delivery App",
-  "productName": "Delivery App",
+  "description": "Nombre de la Aplicación",
+  "productName": "Nombre de la Aplicación",
   "author": "feliking",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "laravel-build": "quasar build && cp -r dist/spa/. ../backend/public/ && mv ../backend/public/index.html ../backend/resources/views/ && mv ../backend/resources/views/index.html ../backend/resources/views/welcome.blade.php"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

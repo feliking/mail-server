@@ -38,6 +38,11 @@ export default [
           path: '/change_password',
           name: 'password',
           component: () => import('pages/user/Password.vue')
+        },
+        {
+          path: '/notifications/mail',
+          name: 'mail',
+          component: () => import('pages/notification/mail/Index.vue')
         }
       ]
     }

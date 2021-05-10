@@ -9,7 +9,7 @@
         <div class="text-center">
           <q-img
             alt="Fenix Code Logo"
-            src="~assets/quasar-logo-full.svg"
+            src="~assets/mefp_.jpeg"
             style="width: 350px"
             class="q-my-lg"
           />

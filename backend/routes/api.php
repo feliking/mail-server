@@ -33,6 +33,7 @@ Route::group(['middleware' => ['guest:api']], function() {
     Route::post('user/recovery_password', '\App\Http\Controllers\UserController@recovery_password');
     Route::post('user/verify_code', '\App\Http\Controllers\UserController@verify_code');
     Route::post('user/reset_password', '\App\Http\Controllers\UserController@reset_password');
+    Route::post('service/correo', '\App\Http\Controllers\ServicesController@notificacion_mail');
 });
 
 Route::group(['middleware' => ['jwt']], function() {
